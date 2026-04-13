@@ -1,0 +1,7 @@
+span {
+    display: flex;
+}
+
+span > p {
+    margin-right: auto;
+}
