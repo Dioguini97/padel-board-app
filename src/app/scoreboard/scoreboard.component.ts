@@ -10,6 +10,8 @@ import { Component } from '@angular/core';
 })
 export class ScoreboardComponent {
 
+  message: string = 'Let\'s Get Started!'; 
+
   isTiebreak: boolean = false;
 
   gamesForWinningSet: number = 6;
@@ -38,24 +40,28 @@ export class ScoreboardComponent {
   addPointToTeamA() {
     this.checkIfGameIsDeuced();
     this.teamAPointsThisGame++;
+    this.message = 'Point to Team A!';
     this.checkForGameOver();
   }
 
   addPointToTeamB() {
     this.checkIfGameIsDeuced();
     this.teamBPointsThisGame++;
+    this.message = 'Point to Team B!';
     this.checkForGameOver();
   }
 
   checkIfGameIsDeuced() {
     if (this.teamAPointsThisGame === 3 && this.teamBPointsThisGame === 3) {
       this.isDeuce = true;
+      this.message = 'Deuce!';
     }
   }
 
   checkForTiebreakGame() {
     if (this.teamANumberOfGamesThisSet === this.gamesForWinningSet && this.teamBNumberOfGamesThisSet === this.gamesForWinningSet) {
-      this.isTiebreak = true
+      this.isTiebreak = true;
+      this.message = 'Tiebreak!';
     };
   }
 
@@ -74,6 +80,12 @@ export class ScoreboardComponent {
       if (this.teamAPointsThisGame > 3 || this.teamBPointsThisGame > 3) {
         this.closeCurrentGame();
       }
+    }
+  }
+
+  checkForSetOver() {
+    if ((this.teamANumberOfGamesThisSet >= this.gamesForWinningSet || this.teamBNumberOfGamesThisSet >= this.gamesForWinningSet) && (Math.abs(this.teamANumberOfGamesThisSet - this.teamBNumberOfGamesThisSet) >= 2)) {
+      this.closeCurrentSet();
     }
   }
 
@@ -101,25 +113,29 @@ export class ScoreboardComponent {
   closeCurrentGame() {
     if (this.teamAPointsThisGame > this.teamBPointsThisGame) {
       this.teamANumberOfGamesThisSet++;
+      this.message = 'Game to Team A!';
     }
     else {
       this.teamBNumberOfGamesThisSet++;
+      this.message = 'Game to Team B!';
     }
     this.isDeuce = false;
     this.teamAPointsThisGame = 0;
     this.teamBPointsThisGame = 0;
     this.game++;
     this.checkForTiebreakGame();
+    this.checkForSetOver();
   }
 
   closeCurrentSet() {
-    this.closeCurrentGame();
     this.gamesPerSetTeamA.push(this.teamANumberOfGamesThisSet);
     this.gamesPerSetTeamB.push(this.teamBNumberOfGamesThisSet);
     if (this.teamANumberOfGamesThisSet > this.teamBNumberOfGamesThisSet) {
       this.teamANumberOfSets++;
+      this.message = 'Set to Team A!';
     } else {
       this.teamBNumberOfSets++;
+      this.message = 'Set to Team B!';
     }
     this.teamANumberOfGamesThisSet = 0;
     this.teamBNumberOfGamesThisSet = 0;
@@ -146,10 +162,13 @@ export class ScoreboardComponent {
     else if (this.isDeuce) {
       switch (pointA - pointB) {
         case 0:
+          this.message = 'Deuce!'
           return '40 - 40';
         case 1:
+          this.message = 'Advantage Team A!';
           return 'A - 40';
         case -1:
+          this.message = 'Advantage Team B!';
           return '40 - A';
       }
     }
