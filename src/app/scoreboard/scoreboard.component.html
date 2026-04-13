@@ -5,10 +5,10 @@
         <p *ngIf="isTiebreak">Tiebreak</p>
     </span>
     
-    <div id="teamA-score-this-game">{{teamAScoreThisGame}}</div>
-    <div id="teamB-score-this-game">{{teamBScoreThisGame}}</div>
+    <div id="score-this-game">{{pointsToScore(teamAPointsThisGame, teamBPointsThisGame)}}</div>
     <button id="temaA-point-button" (click)="addPointToTeamA()">Team A Point</button>
     <button id="temaB-point-button" (click)="addPointToTeamB()">Team B Point</button>
-    <div id="games-score-band">{{this.teamANumberOfGamesThisSet}} - {{this.teamBNumberOfGamesThisSet}}</div>
+    <div id="this-set-games-score-band">{{teamANumberOfGamesThisSet}} - {{teamBNumberOfGamesThisSet}}</div>
+    <div id="games-score-band" *ngFor="let i of gamesPerSetTeamA; index as j">{{this.gamesPerSetTeamA[j]}} - {{this.gamesPerSetTeamB[j]}}</div>
     <div id="sets-score-band"></div>
 </div>
